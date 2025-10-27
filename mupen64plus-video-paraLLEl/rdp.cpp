@@ -140,7 +140,7 @@ void profile_refresh_end()
 void begin_frame()
 {
 	int flags;
-	skip frame = false;
+	skip_frame = false;
     if (environ_cb(RETRO_ENVIRONMENT_GET_AUDIO_VIDEO_ENABLE, &flags))
     {
           if(flags & 1)
