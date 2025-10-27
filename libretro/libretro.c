@@ -1864,6 +1864,8 @@ void retro_run (void)
 
       update_variables(false);
 
+      //TODO: this is the real location once i know how to pass the variable.
+
       var.key = "parallel-n64-aspectratiohint";
       var.value = NULL;
 

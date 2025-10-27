@@ -27,6 +27,8 @@ static QueryPoolHandle begin_ts, end_ts;
 static vector<retro_vulkan_image> retro_images;
 static vector<ImageHandle> retro_image_handles;
 unsigned width, height;
+
+bool skip_frame = false;
 unsigned overscan;
 unsigned upscaling = 1;
 unsigned downscaling_steps = 0;
@@ -137,7 +139,18 @@ void profile_refresh_end()
 
 void begin_frame()
 {
-	unsigned mask = vulkan->get_sync_index_mask(vulkan->handle);
+	int flags;
+    if (environ_cb(RETRO_ENVIRONMENT_GET_AUDIO_VIDEO_ENABLE, &flags))
+    {
+          if(flags & 1)
+		  	skip_frame = true;
+    }
+    if (skip_frame)
+    {
+        return;
+    }
+
+    unsigned mask = vulkan->get_sync_index_mask(vulkan->handle);
 	unsigned num_frames = 0;
 	for (unsigned i = 0; i < 32; i++)
 		if (mask & (1u << i))
@@ -307,12 +320,17 @@ static void complete_frame_error()
 
 void complete_frame()
 {
-	if (!frontend)
-	{
-		complete_frame_error();
-		device->next_frame_context();
-		return;
-	}
+    if (skip_frame)
+    {
+        return;
+    }
+
+    if (!frontend)
+    {
+        complete_frame_error();
+        device->next_frame_context();
+        return;
+    }
 
 	timeline_value = frontend->signal_timeline();
 
