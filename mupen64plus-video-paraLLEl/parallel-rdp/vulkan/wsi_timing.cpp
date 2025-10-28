@@ -455,7 +455,7 @@ void WSITiming::begin_frame(double &frame_time, double &elapsed_time)
 	// Absolute minimum case, just get some initial data before we have some real estimates.
 	update_frame_pacing(serial_info.serial, new_timing.wall_frame_begin, true);
 	update_frame_time_smoothing(frame_time, elapsed_time);
-	limit_latency(new_timing);
+	//limit_latency(new_timing);
 
 	new_timing.wall_frame_target = compute_target_present_time_for_serial(serial_info.serial);
 }

@@ -565,7 +565,7 @@ bool WSI::blocking_init_swapchain(unsigned width, unsigned height)
 		else if (err == SwapchainError::NoSurface && platform->alive(*this))
 		{
 			platform->poll_input();
-			this_thread::sleep_for(chrono::milliseconds(10));
+			//this_thread::sleep_for(chrono::milliseconds(10));
 		}
 	} while (err != SwapchainError::None);
 
